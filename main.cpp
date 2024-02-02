@@ -2,40 +2,35 @@
 
 using namespace std;
 
-// e numeste cautare binara cautarea unui element intr-un sir sortat.
-// Aceasta se rezolva folosind un algoritm de tip divide et empera si anume:
-// Se imparte sirul in jumatate si se verifica daca elementul din mijloc este egal cu elementul cautat.
-// Daca da, atunci algoritmul se incheie.
-// Daca nu, atunci algoritmul continua fie in pria jumatate daca elementul cautat este mai mic decat elementul din mijloc, fie in a doua jumatate in caz contrar
+// Să se afle poziția celui mai mic element care este mai mare decât X
 
-// Obs: Algoritmul se poate implementa atat recursiv cat si iterativ, dar se recomanda varianta iterativa
+// a = (7, 10, 40, 50, 100, 500, 600)
+// X = 30
 
-// x = 100
-// a = (7, 12, 40, 100, 512):
-// x > 40 => (100, 512)
-// x = 100 => mij = 3
+// st = 0, dr = 6, mij = 3 => a[3] = 50 > x => poz = 3 -> mergem în stânga
+// st = 0, dr = 2, mij = 1 => a[1] = 10 < x -> mergem în stânga
+// st = 2, dr = 2, mij = 2 => a[2] = 4o > x => poz = 2 -> mergem în stânga
+// st = 2, dr = 1 => STOP
 
-// x = 6
-// a = (7, 12, 40, 100, 512):
-// x < 40 => (7, 12)
-// x < 7 => NU EXISTA
 
-bool find(int &x, int &n, const int a[]) {
+// X = 700 =>
+
+
+int find(int &x, int &n, const int a[]) {
+    int poz;
+
     for (int st = 0, dr = n - 1; st <= dr;) {
         int mij = (st + dr) / 2;
 
-        if (a[mij] == x) {
-            return true;
-        }
-
-        if (a[mij] < x) {
-            st = mij + 1;
-        } else {
+        if (a[mij] > x) {
             dr = mij - 1;
+            poz = mij;
+        } else {
+            st = mij + 1;
         }
     }
 
-    return false;
+    return poz;
 }
 
 void read(int &x, int &n, int a[]) {
