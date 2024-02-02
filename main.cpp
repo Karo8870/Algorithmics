@@ -2,73 +2,55 @@
 
 using namespace std;
 
-// Sortarea prin interclasare
+// e numeste cautare binara cautarea unui element intr-un sir sortat.
+// Aceasta se rezolva folosind un algoritm de tip divide et empera si anume:
+// Se imparte sirul in jumatate si se verifica daca elementul din mijloc este egal cu elementul cautat.
+// Daca da, atunci algoritmul se incheie.
+// Daca nu, atunci algoritmul continua fie in pria jumatate daca elementul cautat este mai mic decat elementul din mijloc, fie in a doua jumatate in caz contrar
 
-int a[100];
+// Obs: Algoritmul se poate implementa atat recursiv cat si iterativ, dar se recomanda varianta iterativa
 
-void interclasare(int st, int mij, int dr) {
-    int i = st, j = mij + 1, b[100], k = st;
+// x = 100
+// a = (7, 12, 40, 100, 512):
+// x > 40 => (100, 512)
+// x = 100 => mij = 3
 
-    while (i <= mij && j <= dr) {
-        if (a[i] < a[j]) {
-            b[k++] = a[i++];
+// x = 6
+// a = (7, 12, 40, 100, 512):
+// x < 40 => (7, 12)
+// x < 7 => NU EXISTA
+
+bool find(int &x, int &n, const int a[]) {
+    for (int st = 0, dr = n - 1; st <= dr;) {
+        int mij = (st + dr) / 2;
+
+        if (a[mij] == x) {
+            return true;
+        }
+
+        if (a[mij] < x) {
+            st = mij + 1;
         } else {
-            b[k++] = a[j++];
+            dr = mij - 1;
         }
     }
 
-    for (; i <= mij; i++) {
-        b[k++] = a[i];
-    }
-
-    for (; j <= dr; j++) {
-        b[k++] = a[j];
-    }
-
-    for (i = st; i <= dr; i++) {
-        a[i] = b[i];
-    }
+    return false;
 }
 
-void merge(int st, int dr) {
-    if (st == dr) {
-        return;
-    }
-
-    int mij = (st + dr) / 2;
-
-    merge(st, mij);
-    merge(mij + 1, dr);
-
-    interclasare(st, mij, dr);
-}
-
-void read(int &n) {
-    cin >> n;
+void read(int &x, int &n, int a[]) {
+    cin >> x >> n;
 
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
 }
 
-void write(int &n) {
-    for (int i = 0; i < n; i++) {
-        cout << a[i] << ' ';
-    }
-}
-
 int main() {
-    int n;
+    int n, x, a[100];
 
-    read(n);
-    merge(0, n - 1);
-    write(n);
+    read(x, n, a);
+    cout << find(x, n, a);
 
     return 0;
 }
-
-// 7 4 2 1 5 9 3 =>
-
-// 7 4 2 1 => (7 4) [4 7], (2, 1) [1 2]       [1 2 4 7] |
-//                                                      | => [1, 2, 3, 4, 5, 7, 9]
-// 5 9 3 => (5, 9) [5 9], 3 [3]               [3 5 9]   |
