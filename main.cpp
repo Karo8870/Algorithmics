@@ -1,39 +1,74 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
-void read(int &n, int prices[]) {
-    cin >> n;
+// Sortarea prin interclasare
 
-    for (int i = 1; i <= n; i++) {
-        cin >> prices[i];
+int a[100];
+
+void interclasare(int st, int mij, int dr) {
+    int i = st, j = mij + 1, b[100], k = st;
+
+    while (i <= mij && j <= dr) {
+        if (a[i] < a[j]) {
+            b[k++] = a[i++];
+        } else {
+            b[k++] = a[j++];
+        }
+    }
+
+    for (; i <= mij; i++) {
+        b[k++] = a[i];
+    }
+
+    for (; j <= dr; j++) {
+        b[k++] = a[j];
+    }
+
+    for (i = st; i <= dr; i++) {
+        a[i] = b[i];
     }
 }
 
-int solve(int p[], int &n) {
-    int r[100];
-    r[0] = 0;
-
-    for (int l = 1; l <= n; l++) {
-        int optimal_value = INT_MIN;
-
-        for (int i = 1; i <= l; i++) {
-            optimal_value = max(optimal_value, p[i] + r[l - i]);
-            // Tai o bucata de lungime i din bara (p[i]) si iau impartirea optima pentru bucata de lungime l - i (r[l - i])
-        }
-
-        r[l] = optimal_value; // Profitul maxim pentru lungimea l este optimal_value
+void merge(int st, int dr) {
+    if (st == dr) {
+        return;
     }
 
-    return r[n];
+    int mij = (st + dr) / 2;
+
+    merge(st, mij);
+    merge(mij + 1, dr);
+
+    interclasare(st, mij, dr);
+}
+
+void read(int &n) {
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+}
+
+void write(int &n) {
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << ' ';
+    }
 }
 
 int main() {
-    int n, prices[100];
+    int n;
 
-    read(n, prices);
-
-    cout << solve(prices, n);
+    read(n);
+    merge(0, n - 1);
+    write(n);
 
     return 0;
 }
+
+// 7 4 2 1 5 9 3 =>
+
+// 7 4 2 1 => (7 4) [4 7], (2, 1) [1 2]       [1 2 4 7] |
+//                                                      | => [1, 2, 3, 4, 5, 7, 9]
+// 5 9 3 => (5, 9) [5 9], 3 [3]               [3 5 9]   |
