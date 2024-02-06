@@ -1,51 +1,60 @@
-#include <iostream>
+/*
+Pointeri
 
-using namespace std;
+ Un pointer este o variabilă care reține o adresă de memorie (adresa unei alte variabile)
+ Obs: Adresele de memorie sunt numere în baza 16
 
-// Să se afle poziția celui mai mic element care este mai mare decât X
+ ex: A1B2, A1B3, A1B4, A1B5
+       |
+       5
 
-// a = (7, 10, 40, 50, 100, 500, 600)
-// X = 30
+ Declarație:
+     <tip> *p, x;
+     p ~ pointer (adresă)
+     *p ~ Valoarea adresată la adresa p
+     &x ~ adresa la care se memorează valoarea x
 
-// st = 0, dr = 6, mij = 3 => a[3] = 50 > x => poz = 3 -> mergem în stânga
-// st = 0, dr = 2, mij = 1 => a[1] = 10 < x -> mergem în stânga
-// st = 2, dr = 2, mij = 2 => a[2] = 4o > x => poz = 2 -> mergem în stânga
-// st = 2, dr = 1 => STOP
+ Operații cu pointeri:
 
+     1. Scăderea:
+        p1 - p2 are ca rezultat un număr întreg care reprezintă numărul de locații de memorie care despart cele 2 adrese
 
-// X = 700 =>
+     2. Incrementare / Decrementare:
+        p++, p--, ++p, --p; (trecerea la adresa următoare / precedentă)
 
+     3. Adunarea cu un număr întreg:
+        p += x;
+        x este int;
 
-int find(int &x, int &n, const int a[]) {
-    int poz;
+ Legătura dintre pointeri și vectori / matrice:
+    int a[5]; - Alocare statică a memoriei
 
-    for (int st = 0, dr = n - 1; st <= dr;) {
-        int mij = (st + dr) / 2;
+    Obs: Orice vector este un pointer constant
 
-        if (a[mij] > x) {
-            dr = mij - 1;
-            poz = mij;
-        } else {
-            st = mij + 1;
-        }
-    }
+    valoarea: a[0] | a[1] | a[2] ...
+    adresa:    a   | a+1  | a+2  ...
 
-    return poz;
-}
+    a[i] este elementul la adresa a + i
 
-void read(int &x, int &n, int a[]) {
-    cin >> x >> n;
+    a[i] == (a + i) == (i + a) == i[a]
 
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
-}
+    Așa nu: a = b; - GRESIT
 
-int main() {
-    int n, x, a[100];
+    Alocare dinamică:
 
-    read(x, n, a);
-    cout << find(x, n, a);
+        int *a;
 
-    return 0;
-}
+        int *b;
+
+        a = b;
+
+        Acești pointeri dinamici necesită obligatoriu alocarea dinamică a memoriei (manual)
+
+    int a[3][2];
+
+    | a[0][0] | a[0][1] | a[1][0] | a[1][1] | a[2][0] | a[2][1] |
+
+    a[i] == (a + i)
+
+    a[i][j] = (*(a + i) + j)
+*/
