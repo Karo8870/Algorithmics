@@ -1,60 +1,77 @@
+#include<iostream>
+#include<cstring>
+
+using namespace std;
+
 /*
-Pointeri
+ * 7.
+ *
+ * char *strtok(char *S, char *delim);
+ *
+ * delim = " .,?!";
+ *
+ * Ana are mere, pere sau gutui? Nu are nimic!
+ *  t   t   t     t    t    t    t   t    t
+ *
+ *  delim = "+-=";
+ *
+ *  56+13=Nu stiu
+ *  t  t  t   t
+ *
+ *  t = "Ana"; t = strtok(S, " .,?!")
+ *  t = "are"; t = strtok(0, " .,?!")
+ *
+ * char *t
+ *
+ * OBS:
+ * - Funcția strtok strică stringul parcurs punând 0-uri după fiecare cuvânt procesat
+ * - Atunci când folosesc strtok nu știu câți delimitatori sunt între cuvinte deci nu mai pot reface, îl mai pot folosi eventual dacă păstrez o copie a lui
+ * - Se recomandă folosirea acestei funcții doar atunci când nu mai avem nevoie de șirul inițial sau când știm exact structura lui pentru a-l putea reface (ex. Cuvinte despărțite printr-un singur spațiu)
+ *
+ *
+ * Se citește un șir de caractere format din cuvinte despărțite printr-un singur spațiu. Să se afișeze șirul inițial în care cuvintele palindrom se înlocuiesc cu cuvântul palindrom. Înlocuirea se va face efectiv în memorie
+ **/
 
- Un pointer este o variabilă care reține o adresă de memorie (adresa unei alte variabile)
- Obs: Adresele de memorie sunt numere în baza 16
+bool isPal(char *t) {
+    int dr = strlen(t) - 1;
 
- ex: A1B2, A1B3, A1B4, A1B5
-       |
-       5
+    int st = 0;
 
- Declarație:
-     <tip> *p, x;
-     p ~ pointer (adresă)
-     *p ~ Valoarea adresată la adresa p
-     &x ~ adresa la care se memorează valoarea x
+    while (st < dr) {
+        if (t[st] != t[dr]) {
+            return false;
+        }
 
- Operații cu pointeri:
+        st++, dr--;
+    }
 
-     1. Scăderea:
-        p1 - p2 are ca rezultat un număr întreg care reprezintă numărul de locații de memorie care despart cele 2 adrese
+    return true;
+}
 
-     2. Incrementare / Decrementare:
-        p++, p--, ++p, --p; (trecerea la adresa următoare / precedentă)
+int main() {
+    char S[100];
 
-     3. Adunarea cu un număr întreg:
-        p += x;
-        x este int;
+    cin.getline(S, 100);
 
- Legătura dintre pointeri și vectori / matrice:
-    int a[5]; - Alocare statică a memoriei
+    char delim[] = " ";
 
-    Obs: Orice vector este un pointer constant
+    char result[100];
 
-    valoarea: a[0] | a[1] | a[2] ...
-    adresa:    a   | a+1  | a+2  ...
+    for (char *t = strtok(S, delim); t; t = strtok(nullptr, delim)) {
+        if (isPal(t)) {
+            strcat(result, "palindrom");
+        } else {
+            strcat(result, t);
+        }
 
-    a[i] este elementul la adresa a + i
+        strcat(result, " ");
+    }
 
-    a[i] == (a + i) == (i + a) == i[a]
+    result[strlen(result) - 1] = 0;
 
-    Așa nu: a = b; - GRESIT
+    strcpy(S, result);
 
-    Alocare dinamică:
+    cout << S;
 
-        int *a;
-
-        int *b;
-
-        a = b;
-
-        Acești pointeri dinamici necesită obligatoriu alocarea dinamică a memoriei (manual)
-
-    int a[3][2];
-
-    | a[0][0] | a[0][1] | a[1][0] | a[1][1] | a[2][0] | a[2][1] |
-
-    a[i] == (a + i)
-
-    a[i][j] = (*(a + i) + j)
-*/
+    return 0;
+}
